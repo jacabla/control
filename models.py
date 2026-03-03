@@ -22,6 +22,7 @@ class User(Base):
     workouts = relationship("Workout", back_populates="user")
     metrics = relationship("BodyMetric", back_populates="user")
     cooper_tests = relationship("CooperTest", back_populates="user")
+    strength_tests = relationship("StrengthTest", back_populates="user")
 
 
 class Workout(Base):
@@ -101,3 +102,18 @@ class CooperTest(Base):
     notes = Column(Text, nullable=True)
 
     user = relationship("User", back_populates="cooper_tests")
+
+class StrengthTest(Base):
+    __tablename__ = "strength_tests"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String, ForeignKey("users.id"))
+    date = Column(DateTime, default=datetime.utcnow)
+
+    # Fuerza y resistencia
+    sit_ups = Column(Integer, nullable=True)        # abdominales en 1 min
+    push_ups = Column(Integer, nullable=True)       # flexiones en 1 min
+    squats = Column(Integer, nullable=True)         # sentadillas en 1 min
+    sit_and_reach = Column(Float, nullable=True)    # flexibilidad en cm
+
+    user = relationship("User", back_populates="strength_tests")

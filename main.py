@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base, get_db
 from models import User, Workout
-from routers import workouts, metrics, cooper, profile
+from routers import workouts, metrics, cooper, profile, strength
 
 
 load_dotenv()
@@ -30,6 +30,7 @@ app.include_router(workouts.router, prefix="/api")
 app.include_router(metrics.router, prefix="/api")
 app.include_router(cooper.router, prefix="/api")
 app.include_router(profile.router, prefix="/api")
+app.include_router(strength.router, prefix="/api")
 
 @app.get("/")
 def root():
