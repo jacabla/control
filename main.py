@@ -6,6 +6,9 @@ from models import User, Workout
 from routers import workouts
 
 Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
+print("✅ Tablas creadas correctamente")
+print("📊 Tablas disponibles:", Base.metadata.tables.keys())
 
 app = FastAPI(title="Fitness Tracker API")
 
