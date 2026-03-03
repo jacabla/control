@@ -33,3 +33,7 @@ def root():
 def create_tables():
     Base.metadata.create_all(bind=engine)
     return {"tables": list(Base.metadata.tables.keys())}
+
+@app.get("/admin/db-url")
+def check_db():
+    return {"url": SQLALCHEMY_DATABASE_URL[:50]}
