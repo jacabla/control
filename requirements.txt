@@ -4,3 +4,5 @@ sqlalchemy
 firebase-admin
 python-jose
 python-dotenv
+psycopg2-binary
+asyncpg
