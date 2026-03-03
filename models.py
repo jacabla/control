@@ -13,6 +13,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     workouts = relationship("Workout", back_populates="user")
+    metrics = relationship("BodyMetric", back_populates="user")
 
 
 class Workout(Base):
@@ -40,3 +41,31 @@ class Exercise(Base):
     weight = Column(Float, nullable=True)
 
     workout = relationship("Workout", back_populates="exercises")
+
+class BodyMetric(Base):
+    __tablename__ = "body_metrics"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String, ForeignKey("users.id"))
+    date = Column(DateTime, default=datetime.utcnow)
+
+    # Datos físicos
+    weight = Column(Float, nullable=True)       # kg
+    height = Column(Float, nullable=True)       # cm
+    age = Column(Integer, nullable=True)
+    body_fat = Column(Float, nullable=True)     # %
+    muscle_mass = Column(Float, nullable=True)  # kg
+
+    # Medidas corporales (cm)
+    chest = Column(Float, nullable=True)
+    waist = Column(Float, nullable=True)
+    hips = Column(Float, nullable=True)
+    arms = Column(Float, nullable=True)
+    legs = Column(Float, nullable=True)
+    neck = Column(Float, nullable=True)
+
+    # Salud
+    systolic_bp = Column(Integer, nullable=True)   # presión sistólica
+    diastolic_bp = Column(Integer, nullable=True)  # presión diastólica
+
+    user = relationship("User", back_populates="metrics")
