@@ -14,6 +14,7 @@ class User(Base):
 
     workouts = relationship("Workout", back_populates="user")
     metrics = relationship("BodyMetric", back_populates="user")
+    cooper_tests = relationship("CooperTest", back_populates="user")
 
 
 class Workout(Base):
@@ -69,3 +70,27 @@ class BodyMetric(Base):
     diastolic_bp = Column(Integer, nullable=True)  # presión diastólica
 
     user = relationship("User", back_populates="metrics")
+
+class CooperTest(Base):
+    __tablename__ = "cooper_tests"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String, ForeignKey("users.id"))
+    date = Column(DateTime, default=datetime.utcnow)
+
+    # Datos del test
+    distance = Column(Float, nullable=True)        # metros recorridos en 12 min
+    vo2_max = Column(Float, nullable=True)         # calculado automáticamente
+    classification = Column(String, nullable=True) # Muy malo, Malo, Regular, Bueno, Excelente, Superior
+    age = Column(Integer, nullable=True)
+    gender = Column(String, nullable=True)         # M / F
+
+    # Frecuencia cardíaca
+    hr_before = Column(Integer, nullable=True)     # antes del test
+    hr_after = Column(Integer, nullable=True)      # después del test
+
+    # Condiciones
+    conditions = Column(String, nullable=True)     # pista, calle, clima
+    notes = Column(Text, nullable=True)
+
+    user = relationship("User", back_populates="cooper_tests")
