@@ -65,3 +65,24 @@ def update_profile(
     db.commit()
     db.refresh(user)
     return {"message": "Perfil actualizado", "profile_complete": user.profile_complete}
+
+@router.get("/profile", response_model=ProfileOut)
+def get_profile(uid: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == uid).first()
+    if not user:
+        return ProfileOut(
+            id=uid, name="", email="",
+            profile_complete=0
+        )
+    return ProfileOut(
+        id=user.id,
+        name=user.name or "",
+        email=user.email or "",
+        photo_url=user.photo_url,
+        birth_date=user.birth_date,
+        gender=user.gender,
+        goal=user.goal,
+        activity_level=user.activity_level,
+        profile_complete=user.profile_complete or 0,
+        age=calculate_age(user.birth_date) if user.birth_date else None
+    )
