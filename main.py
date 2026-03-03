@@ -28,3 +28,8 @@ app.include_router(workouts.router, prefix="/api")
 @app.get("/")
 def root():
     return {"message": "Fitness Tracker API funcionando 🚀"}
+
+@app.get("/admin/create-tables")
+def create_tables():
+    Base.metadata.create_all(bind=engine)
+    return {"tables": list(Base.metadata.tables.keys())}
