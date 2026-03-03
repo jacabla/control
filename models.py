@@ -6,11 +6,18 @@ from database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(String, primary_key=True)  # uid de Firebase
+    id = Column(String, primary_key=True)
     email = Column(String, unique=True, index=True)
     name = Column(String)
     photo_url = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Datos del perfil
+    birth_date = Column(String, nullable=True)
+    gender = Column(String, nullable=True)
+    goal = Column(String, nullable=True)
+    activity_level = Column(String, nullable=True)
+    profile_complete = Column(Integer, default=0)  # 0 = incompleto, 1 = completo
 
     workouts = relationship("Workout", back_populates="user")
     metrics = relationship("BodyMetric", back_populates="user")
