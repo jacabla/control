@@ -8,53 +8,49 @@ from datetime import datetime
 
 router = APIRouter()
 
-def calculate_vo2_max(distance: float) -> float:
-    return round((distance - 504.9) / 44.73, 1)
-
 def get_classification(vo2_max: float, age: int, gender: str) -> str:
-    # Tablas de clasificación por género y edad
     if gender == 'F':
         if age < 30:
-            if vo2_max < 28: return "Muy malo"
-            elif vo2_max < 34: return "Malo"
-            elif vo2_max < 38: return "Regular"
-            elif vo2_max < 48: return "Bueno"
+            if vo2_max < 28: return "Deficiente, necasita mejorar"
+            elif vo2_max < 34: return "Avanzando, pero necesita mejorar"
+            elif vo2_max < 38: return "Regular, sigue avanzando"
+            elif vo2_max < 48: return "Bueno, vas mejorando"
             elif vo2_max < 52: return "Excelente"
             else: return "Superior"
         elif age < 40:
-            if vo2_max < 27: return "Muy malo"
-            elif vo2_max < 33: return "Malo"
-            elif vo2_max < 37: return "Regular"
-            elif vo2_max < 45: return "Bueno"
+            if vo2_max < 27: return "Deficiente, necasita mejorar"
+            elif vo2_max < 33: return "Avanzando, pero necesita mejorar"
+            elif vo2_max < 37: return "Regular, sigue avanzando"
+            elif vo2_max < 45: return "Bueno, vas mejorando"
             elif vo2_max < 49: return "Excelente"
             else: return "Superior"
         else:
-            if vo2_max < 25: return "Muy malo"
-            elif vo2_max < 31: return "Malo"
-            elif vo2_max < 35: return "Regular"
-            elif vo2_max < 42: return "Bueno"
+            if vo2_max < 25: return "Deficiente, necasita mejorar"
+            elif vo2_max < 31: return "Avanzando, pero necesita mejorar"
+            elif vo2_max < 35: return "Regular, sigue avanzando"
+            elif vo2_max < 42: return "Bueno, vas mejorando"
             elif vo2_max < 46: return "Excelente"
             else: return "Superior"
     else:  # M
         if age < 30:
-            if vo2_max < 38: return "Muy malo"
-            elif vo2_max < 42: return "Malo"
-            elif vo2_max < 46: return "Regular"
-            elif vo2_max < 52: return "Bueno"
+            if vo2_max < 38: return "Deficiente, necasita mejorar"
+            elif vo2_max < 42: return "Avanzando, pero necesita mejorar"
+            elif vo2_max < 46: return "Regular, sigue avanzando"
+            elif vo2_max < 52: return "Bueno, vas mejorando"
             elif vo2_max < 60: return "Excelente"
             else: return "Superior"
         elif age < 40:
-            if vo2_max < 34: return "Muy malo"
-            elif vo2_max < 38: return "Malo"
-            elif vo2_max < 42: return "Regular"
-            elif vo2_max < 48: return "Bueno"
+            if vo2_max < 34: return "Deficiente, necasita mejorar"
+            elif vo2_max < 38: return "Avanzando, pero necesita mejorar"
+            elif vo2_max < 42: return "Regular, sigue avanzando"
+            elif vo2_max < 48: return "Bueno, vas mejorando"
             elif vo2_max < 54: return "Excelente"
             else: return "Superior"
         else:
-            if vo2_max < 31: return "Muy malo"
-            elif vo2_max < 35: return "Malo"
-            elif vo2_max < 39: return "Regular"
-            elif vo2_max < 45: return "Bueno"
+            if vo2_max < 31: return "Deficiente, necasita mejorar"
+            elif vo2_max < 35: return "Avanzando, pero necesita mejorar"
+            elif vo2_max < 39: return "Regular, sigue avanzando"
+            elif vo2_max < 45: return "Bueno, vas mejorando"
             elif vo2_max < 51: return "Excelente"
             else: return "Superior"
 
