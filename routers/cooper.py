@@ -8,6 +8,9 @@ from datetime import datetime
 
 router = APIRouter()
 
+def calculate_vo2_max(distance: float) -> float:
+    return round((distance - 504.9) / 44.73, 1)
+
 def get_classification(vo2_max: float, age: int, gender: str) -> str:
     if gender == 'F':
         if age < 30:
@@ -53,6 +56,7 @@ def get_classification(vo2_max: float, age: int, gender: str) -> str:
             elif vo2_max < 45: return "Bueno, vas mejorando"
             elif vo2_max < 51: return "Excelente"
             else: return "Superior"
+
 
 class CooperCreate(BaseModel):
     distance: Optional[float] = None
