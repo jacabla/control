@@ -31,7 +31,7 @@ app.include_router(metrics.router, prefix="/api")
 app.include_router(cooper.router, prefix="/api")
 app.include_router(profile.router, prefix="/api")
 app.include_router(strength.router, prefix="/api")
-app.include_router(training.router)
+app.include_router(training.router,prefix="/api")
 
 @app.get("/")
 def root():
