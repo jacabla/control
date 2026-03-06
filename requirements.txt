@@ -5,3 +5,5 @@ firebase-admin
 python-jose
 python-dotenv
 psycopg[binary]
+openpyxl
+python-multipart
