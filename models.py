@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Text
+from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -117,3 +117,56 @@ class StrengthTest(Base):
     sit_and_reach = Column(Float, nullable=True)    # flexibilidad en cm
 
     user = relationship("User", back_populates="strength_tests")
+
+class TrainingPlan(Base):
+    __tablename__ = "training_plans"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    name = Column(String, nullable=False)          # ej: "Karla - Marzo 2026"
+    month = Column(Integer, nullable=False)        # 3
+    year = Column(Integer, nullable=False)         # 2026
+    competition = Column(String, nullable=True)    # "5 km"
+    objective = Column(String, nullable=True)
+    observations = Column(String, nullable=True)
+    uploaded_at = Column(DateTime, default=datetime.utcnow)
+
+    sessions = relationship("PlannedSession", back_populates="plan", cascade="all, delete-orphan")
+
+
+class PlannedSession(Base):
+    __tablename__ = "planned_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    plan_id = Column(Integer, ForeignKey("training_plans.id"), nullable=False)
+    week = Column(Integer, nullable=True)
+    date = Column(String, nullable=True)           # "02/03/2026"
+    day = Column(String, nullable=True)            # "Lunes"
+    exercise_type = Column(String, nullable=True)  # "Carrera Continua"
+    description = Column(String, nullable=True)
+    duration_min = Column(Float, nullable=True)
+    distance_km = Column(Float, nullable=True)
+    pulse_min = Column(Integer, nullable=True)
+    pulse_max = Column(Integer, nullable=True)
+    notes = Column(String, nullable=True)
+    is_rest = Column(Boolean, default=False)       # True si es LIBRE
+
+    plan = relationship("TrainingPlan", back_populates="sessions")
+    result = relationship("SessionResult", back_populates="session", uselist=False, cascade="all, delete-orphan")
+
+
+class SessionResult(Base):
+    __tablename__ = "session_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+    session_id = Column(Integer, ForeignKey("planned_sessions.id"), nullable=False)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    status = Column(String, nullable=True)         # "completed", "partial", "skipped"
+    duration_real = Column(Float, nullable=True)
+    distance_real = Column(Float, nullable=True)
+    avg_pulse = Column(Integer, nullable=True)
+    feeling = Column(String, nullable=True)        # "excellent", "good", "regular", "hard"
+    notes = Column(String, nullable=True)
+    recorded_at = Column(DateTime, default=datetime.utcnow)
+
+    session = relationship("PlannedSession", back_populates="result")
