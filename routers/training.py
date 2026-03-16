@@ -241,6 +241,33 @@ def save_result(session_id: int, user_id: str, payload: SessionResultCreate, db:
     db.commit()
     return {"message": "Resultado guardado"}
 
+# ── Get todos los resultados de sesiones del usuario ──────────────────────────
+
+@router.get("/sessions/results/{user_id}")
+def get_all_session_results(user_id: str, db: Session = Depends(get_db)):
+    results = (
+        db.query(SessionResult, PlannedSession)
+        .join(PlannedSession, SessionResult.session_id == PlannedSession.id)
+        .filter(SessionResult.user_id == user_id)
+        .order_by(SessionResult.recorded_at.desc())
+        .all()
+    )
+    return [
+        {
+            "id": r.SessionResult.id,
+            "status": r.SessionResult.status,
+            "duration_real": r.SessionResult.duration_real,
+            "distance_real": r.SessionResult.distance_real,
+            "avg_pulse": r.SessionResult.avg_pulse,
+            "feeling": r.SessionResult.feeling,
+            "recorded_at": r.SessionResult.recorded_at,
+            "exercise_type": r.PlannedSession.exercise_type,
+            "description": r.PlannedSession.description,
+            "date": r.PlannedSession.date,
+        }
+        for r in results
+    ]
+
 
 # ── Helper ─────────────────────────────────────────────────────────────────────
 
